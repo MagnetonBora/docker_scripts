@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [[ -z $1 ]]; then
+    echo 'There is no user specified'
+    exit 1
+fi
+
+if [[ -z $2 ]]; then
+    database='postgres'
+else
+    database=$2
+fi
+
+container=`docker ps -qf name=postgres`
+
+if [[ -z $container ]]; then
+    echo 'There is no containers started'
+    echo 'You need to start one with postgres-run command'
+    exit 1
+fi
+
+docker exec -it postgres psql -U $1 -d $database
